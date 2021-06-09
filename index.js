@@ -33,6 +33,14 @@ app.post("/upload", upload.single("images"), (req, res) => {
   });
 });
 
+function errHandler(err, req, res, next) {
+  if (err instanceof multer.MulterError) {
+    res.json({
+      success: 0,
+      message: err.message,
+    });
+  }
+}
 
 app.use(errHandler);
 app.listen(PORT, () => {
