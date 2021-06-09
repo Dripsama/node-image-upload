@@ -5,24 +5,6 @@ const path = require("path");
 const PORT = process.env.PORT || 4000;
 
 // storage engine
-const storage = multer.diskStorage({
-  destination: "./upload/images",
-  filename: (req, file, callback) => {
-    return callback(
-      null,
-      `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`
-    );
-  },
-});
-
-const upload = multer({
-  //filter
-  storage: storage,
-  limits: {
-    //size in bytes
-    fileSize: 1000000,
-  },
-});
 
 app.use("/profile", express.static("upload/images"));
 app.post("/upload", upload.single("images"), (req, res) => {
