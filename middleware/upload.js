@@ -11,3 +11,15 @@ const storage = multer.diskStorage({
     );
   },
 });
+
+//upload middleware
+const upload = multer({
+  //filter
+  storage: storage,
+  limits: {
+    //size in bytes
+    fileSize: 1000000,
+  },
+});
+
+module.exports = upload;
