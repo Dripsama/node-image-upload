@@ -17,6 +17,7 @@ function errHandler(err, req, res, next) {
 }
 //upload routes
 app.use("/", require("./routes/api"));
+app.use("/images", express.static("upload/images"));
 
 app.use(errHandler);
 app.listen(PORT, () => {
