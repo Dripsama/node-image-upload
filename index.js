@@ -4,6 +4,8 @@ const multer = require("multer");
 const cors = require("cors");
 const PORT = process.env.PORT || 4000;
 
+//cors needs to enabled before all the routes
+app.use(cors());
 //error handler
 function errHandler(err, req, res, next) {
   if (err instanceof multer.MulterError) {
@@ -23,8 +25,8 @@ app.use((req, res, next) => {
 });
 //upload routes
 app.use("/", require("./routes/api"));
+app.use("/images", express.static("upload/images"));
 
-//using errorhandler
 app.use(errHandler);
 app.use(cors);
 app.listen(PORT, () => {

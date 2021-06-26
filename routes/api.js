@@ -8,7 +8,6 @@ router.get("/", (req, res) => {
 });
 
 //upload routes
-router.use("/profile", express.static("../upload/images"));
 router.post("/upload", upload.single("images"), (req, res) => {
   let URL = req.protocol + "://" + req.get("host") + "/images";
   res.json({
