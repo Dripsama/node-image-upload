@@ -9,6 +9,7 @@ router.get("/", (req, res) => {
 
 //upload routes
 router.post("/upload", upload.single("images"), (req, res) => {
+  console.log(req.file);
   let URL = req.protocol + "://" + req.get("host") + "/images";
   res.json({
     success: 1,

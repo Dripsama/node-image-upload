@@ -3,6 +3,10 @@ const app = express();
 const multer = require("multer");
 const cors = require("cors");
 const PORT = process.env.PORT || 4000;
+const fs = require("fs").promises;
+const tfnode = require("@tensorflow/tfjs-node");
+const cocoSsd = require("@tensorflow-models/coco-ssd");
+// const image = require("./soulking.jpg");
 
 //cors needs to enabled before all the routes
 app.use(cors());
@@ -15,6 +19,28 @@ function errHandler(err, req, res, next) {
     });
   }
 }
+// testing file system
+// const new_image = fs.readFile("./soulking.jpeg");
+// const decodedImage = tfnode.node.decodeImage(new_image, 3);
+// Promise.all([fs.readFile("./soulking.jpeg")]).then((results) => {
+//   // Second result is image buffer.
+//   const imgTensor = tfnode.node.decodeImage(new Uint8Array(results[0]), 3);
+//   // Call detect() to run inference.
+//   console.log(imgTensor);
+// });
+Promise.all([cocoSsd.load(), fs.readFile("./index.jpg")])
+  .then((results) => {
+    // First result is the COCO-SSD model object.
+    const model = results[0];
+    // Second result is image buffer.
+    const imgTensor = tfnode.node.decodeImage(new Uint8Array(results[1]), 3);
+    // Call detect() to run inference.
+    return model.detect(imgTensor);
+  })
+  .then((predictions) => {
+    console.log(JSON.stringify(predictions, null, 2));
+  });
+
 //upload routes
 app.use("/", require("./routes/api"));
 app.use("/images", express.static("upload/images"));
